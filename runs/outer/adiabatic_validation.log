@@ -1,0 +1,29 @@
+=== A) in-sample: Ta ~ w1*Te + w2*Tc (no intercept), per run ===
+run fluid | w1    w2   | RMSE_mix | RMSE_Te-only  RMSE_Tv
+1   EOHP  | 0.140 0.837 |    0.110 |   25.984      29.044
+1   MOHP  | 0.216 0.769 |    0.147 |   22.516      26.830
+1   WOHP  | 0.336 0.642 |    0.186 |   18.792      23.626
+2   EOHP  | 0.144 0.814 |    0.257 |   34.582      37.781
+2   MOHP  | 0.217 0.757 |    0.187 |   29.759      35.066
+2   WOHP  | 0.351 0.583 |    0.302 |   24.491      31.032
+3   EOHP  | 0.133 0.834 |    0.246 |   47.275      51.335
+3   MOHP  | 0.288 0.636 |    2.303 |   36.958      44.439
+3   WOHP  | 0.335 0.639 |    0.443 |   32.870      41.739
+
+=== B) LORO: fit (w1,w2) per fluid on 2 runs, predict held-out run's Ta ===
+fluid | held-out RMSE_mix | RMSE_mean-predictor
+EOHP R1: 0.269 (mean 11.134) | R2: 0.302 (mean 14.860) | R3: 0.433 (mean 20.355)
+MOHP R1: 0.581 (mean 8.346) | R2: 1.423 (mean 11.097) | R3: 3.511 (mean 12.225)
+WOHP R1: 0.361 (mean 4.965) | R2: 0.440 (mean 6.616) | R3: 0.445 (mean 8.558)
+
+=== C) twin-chain: same w, but Te/Tc from PINN-const fold predictions ===
+fluid | held-out RMSE_Ta: measured Te/Tc -> model Te/Tc (seed0, seed-avg)
+EOHP R1: 0.269 -> 0.141 | R2: 0.302 -> 0.483 | R3: 0.433 -> 0.381
+MOHP R1: 0.581 -> 0.624 | R2: 1.423 -> 1.438 | R3: 3.511 -> 4.250
+WOHP R1: 0.361 -> 0.294 | R2: 0.440 -> 0.518 | R3: 0.445 -> 0.759
+
+=== D) one-parameter mix (w2 = 1 - w1), LORO: closed-form LS on the training runs ===
+fluid | held-out (w1, RMSE)
+EOHP R1: w1=0.12, 0.174 | R2: w1=0.12, 0.323 | R3: w1=0.12, 0.335
+MOHP R1: w1=0.24, 0.932 | R2: w1=0.25, 1.607 | R3: w1=0.20, 3.613
+WOHP R1: w1=0.32, 0.215 | R2: w1=0.32, 0.521 | R3: w1=0.32, 0.577

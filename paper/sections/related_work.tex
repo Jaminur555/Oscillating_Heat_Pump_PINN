@@ -1,0 +1,32 @@
+\section{Related work}
+\textbf{Oscillating heat pipes.} OHPs (pulsating heat pipes) are reviewed comprehensively in \cite{ma2015}; their
+effective behaviour emerges from self-excited two-phase oscillation that resists first-principles modelling, which
+is why thermal-performance studies largely remain experimental and apparatus-specific. Our data source, the HCOHP
+study of Yeboah and Darkwa \cite{ijts,dataset,dib}, is unusual in publishing raw thermocouple records for three
+working fluids under three heating levels, and in reporting fluid-dependent dry-out onset (ethanol first) --
+the phenomenon our constant-parameter model structurally cannot represent, and which any fluid-selection use of
+these models must confront \cite{li2019}. The common engineering metric is a steady thermal resistance
+$R_{th} = (T_e - T_c)/Q$ \cite{li2019,ijts}; our $R^*$ is deliberately dimensionless (a ratio of identified rates,
+recoverable from plateau ratios) because absolute fluxes are not identifiable from these records.
+
+\textbf{Grey-box identification.} Imposing physically motivated structure on a low-dimensional state-space and
+fitting its parameters from data is classical system identification \cite{ljung}. The methodological points we
+lean on are old and robust: parameter sloppiness (stiff ratios, sloppy rates) is generic in multi-parameter
+physical models \cite{gutenkunst}, which is why we report the ratio $R^*=a_f/\kappa_f$ rather than the rates; and
+structure selection must be validated out-of-sample, which is what the LORO protocol with two extrapolation
+directions provides.
+
+\textbf{PINNs for inverse problems.} PINNs embed governing equations in the loss of a neural trial solution
+\cite{raissi} and have become a standard tool for forward and inverse problems \cite{karniadakis}. Known
+pathologies (gradient flow, optimisation sensitivity) are documented \cite{wang2021}; for small, fully observed
+lumped systems the classical alternative -- least-squares shooting over the same equations -- is trivially
+available, and controlled comparisons of the two on identical structure are rarer than method papers. Our result
+(shooting $\ge$ PINN in every fold, one-node $\approx$ two-node on the target channel) is a data point for that
+literature, in the spirit of baseline-honest evaluations.
+
+\textbf{Data-driven dynamics.} SINDy \cite{brunton} and GPs \cite{gp} represent the equation-discovery and
+nonparametric-regression routes; our GRU baseline the sequence-learning route. Their uniform failure on the
+extrapolation fold (while a trivial constant-gap predictor stays within \SI{3}{\kelvin}) echoes the general point
+that interpolation skill does not transfer across operating regimes. The conformal prediction literature
+\cite{vovk} offers distribution-free predictive bands; our seed ensembles quantify only parameter uncertainty,
+and we mark conformal augmentation as future work rather than claim calibrated bands.

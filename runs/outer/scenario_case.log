@@ -1,0 +1,23 @@
+=== per-case metrics (mean over 4 fitsets), best fluid per metric ===
+A_ramp60_tau150   EOHP: 2.99/ 0.04  MOHP: 4.98/ 0.07  WOHP: 5.95/ 0.09
+A_ramp60_tau300   EOHP: 3.00/ 0.15  MOHP: 4.99/ 0.19  WOHP: 5.96/ 0.21
+A_ramp60_tau600   EOHP: 3.06/ 2.07  MOHP: 5.08/ 2.07  WOHP: 6.05/ 2.05
+B_cyc60           EOHP:17.83/31.18  MOHP:19.03/29.20  WOHP:19.62/28.33
+C_slug60          EOHP: 2.79/ 3.60  MOHP: 4.79/ 2.75  WOHP: 5.77/ 2.57
+A_ramp75_tau150   EOHP: 4.07/ 0.04  MOHP: 6.77/ 0.09  WOHP: 8.09/ 0.11
+A_ramp75_tau300   EOHP: 4.08/ 0.20  MOHP: 6.79/ 0.25  WOHP: 8.11/ 0.28
+A_ramp75_tau600   EOHP: 4.16/ 2.84  MOHP: 6.91/ 2.84  WOHP: 8.23/ 2.82
+B_cyc75           EOHP:25.86/43.48  MOHP:27.43/40.73  WOHP:28.18/39.51
+C_slug75          EOHP: 3.86/ 3.63  MOHP: 6.59/ 2.77  WOHP: 7.92/ 2.59
+A_ramp90_tau150   EOHP: 5.15/ 0.05  MOHP: 8.57/ 0.10  WOHP:10.23/ 0.13
+A_ramp90_tau300   EOHP: 5.16/ 0.25  MOHP: 8.59/ 0.31  WOHP:10.25/ 0.34
+A_ramp90_tau600   EOHP: 5.27/ 3.61  MOHP: 8.74/ 3.61  WOHP:10.42/ 3.58
+B_cyc90           EOHP:33.90/55.79  MOHP:35.82/52.25  WOHP:36.75/50.69
+C_slug90          EOHP: 4.95/ 3.65  MOHP: 8.40/ 2.79  WOHP:10.07/ 2.61
+best-fluid share on dev_mae   (lower=better): {'EOHP': 1.0}
+best-fluid share on dev_max   (lower=better): {'EOHP': 0.98, 'MOHP': 0.02}
+best-fluid share on ripple    (lower=better): {'WOHP': 0.5, 'EOHP': 0.4, 'MOHP': 0.1}
+best-fluid share on settle_s  (lower=better): {'EOHP': 1.0}
+best-fluid share on lag_K     (lower=better): {'EOHP': 1.0}
+
+case-study reading: EOHP = tight tracking (low lag/MAE), WOHP = low ripple; choice is duty-dependent along R*

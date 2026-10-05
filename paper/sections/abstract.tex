@@ -1,0 +1,30 @@
+\begin{abstract}
+Choosing a working fluid for oscillating heat pipes (OHPs) usually requires a separate experiment per candidate, and
+the underlying two-phase flow resists first-principles modelling. We identify a physics-informed grey-box model of a
+helically coiled OHP from transient temperature measurements of one apparatus operated with ethanol, methanol and
+deionised water, each in three heating runs (vessel plateaus $\sim$58, $\sim$70, $\sim$\SI{93}{\celsius}; nine
+run--fluid series). A lumped two-node energy balance, driven by the measured vessel temperature, is fitted by a
+physics-informed neural network (PINN), which learns the physical parameters jointly with the temperature curves
+through the ODE residual, and equally by plain ODE shooting. Under leave-one-run-out validation the identified model
+predicts the evaporator temperature of an unseen run at \SIrange{0.24}{0.46}{\kelvin} when interpolating and
+\SIrange{0.71}{0.85}{\kelvin} when extrapolating (up or down) in heating level. Reference baselines given the same
+measured initial state locate what this tests: a trivial constant-gap predictor stays within \SI{3}{\kelvin};
+nonlinear black boxes (multilayer perceptron, Gaussian process, degree-2 SINDy) reach \SIrange{0.6}{6}{\kelvin}
+on the interpolation fold but fail at \SIrange{24}{87}{\kelvin} on extrapolation, with a recurrent GRU best among them at
+\SI{5}{\kelvin}; a one-node ablation of the same ODE matches the two-node fits on the evaporator, so the second node
+is justified by the condenser and adiabatic channels, not by evaporator accuracy; and an unconstrained per-fluid
+linear state-space with no physical parameterisation matches or beats the physical model in every fold -- the
+linear structure, fitted by output-error shooting, is what carries extrapolation, and the physical
+parameterisation is retained for parsimony and interpretability. Plain ODE shooting is slightly
+better than the PINN in every fold: for this fully observed 9-parameter linear system the structure, not the
+optimiser, carries the accuracy. A dimensionless coupling ratio $R^*=a_f/\kappa_f$, identifiable also from plateau
+ratios, ranks the fluids in every fit (EOHP $\approx$ 12.6--13.5 $>$ MOHP $\approx$ 7.1--7.3 $>$ WOHP $\approx$
+5.8--6.0); its $\sim$48\% drift for ethanol across heating levels is consistent with the ethanol dry-out reported in
+the source study, a regime the constant-parameter model cannot represent; a per-run temperature-dependent
+$\kappa(T_e)$ is identifiable but does not transfer across heating levels, so the deployed model keeps $\kappa$
+constant. The fitted right-hand side exports as
+ONNX; scenario sweeps within the validated envelope illustrate model-implied trade-offs between setpoint tracking
+and ripple rejection along $R^*$, and are explicitly not fluid recommendations. Limitations: one geometry, one
+shared driver per run, slow ramps, \SI{5}{\second} sampling, equal vessel--evaporator coupling assumed, and no
+heat-flux or dry-out limits.
+\end{abstract}

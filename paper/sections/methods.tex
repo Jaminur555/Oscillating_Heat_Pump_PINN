@@ -1,0 +1,62 @@
+\section{Model and identification}
+\subsection{Two-node grey-box structure}
+With the measured vessel temperature as exogenous driver, per fluid $f$:
+\begin{align}
+\dot T_e &= a_f\,(T_v - T_e) - \kappa_f\,(T_e - T_c), &
+\dot T_c &= r\,\kappa_f\,(T_e - T_c) - d\,(T_c - T_{\mathrm{cool}}),
+\label{eq:ode}
+\end{align}
+where $a_f$ is the vessel--evaporator coupling over evaporator heat capacity, $\kappa_f$ the pipe conductance over
+the same capacity, $r=C_e/C_c$, $d$ a condenser loss rate, and $T_{\mathrm{cool}}$ the sink temperature; $r$, $d$,
+$T_{\mathrm{cool}}$ are shared across fluids. The dimensionless quantity
+\begin{equation}
+R^* \;=\; \frac{R_{\mathrm{pipe}}}{R_{\mathrm{in}}} \;=\; \frac{a_f}{\kappa_f}
+\label{eq:rstar}
+\end{equation}
+requires no knowledge of the evaporator heat capacity and is the natural per-fluid output of the identification.
+We assume the vessel--evaporator coupling geometry is common to the three pipes ($a_f$ differences are fluid-side);
+within-run vessel inner/outer thermocouples are identical across fluid sheets, consistent with a shared bath
+measurement, and the plateau $T_v{-}T_e$ ordering matches the fitted $a$ ordering.
+
+\subsection{PINN}
+A small trial network $U_\theta(t, \text{series})\to(T_e,T_c)$ (3$\times$64 tanh MLP) is trained on the smoothed
+thermocouple data plus the ODE residual of Eq.~\eqref{eq:ode}, evaluated on $U$ by autodiff in time; the physical
+parameters $(\log a_f, \log\kappa_f, \log r, \log d, T_{\mathrm{cool}})$ are optimised jointly (Adam, cosine decay,
+6000 steps, float32). A state-dependent variant learns $\log\kappa_f \mathrel{+}= g_f(T_e, T_e{-}T_c)$ with a small
+MLP $g$. Ten seeds per fold quantify the fit's parameter dispersion.
+
+\subsection{ODE shooting}
+The same Eq.~\eqref{eq:ode} with constant $\kappa_f$ is fitted by least-squares shooting (scipy
+\texttt{least\_squares} over log-parameters, LSODA rollouts). This is the classical route; comparing it to the PINN
+isolates what the neural machinery contributes.
+
+\subsection{Black-box baselines (IC-fair)}
+All baselines receive the same information the physics fits use, including the measured initial state:
+(MLP, GP) map $(t, T_v, \dot T_v, \text{fluid one-hot}, T_e(0), T_c(0)) \to (T_e, T_c)$ pointwise;
+SINDy (STLSQ, degree-2 polynomial library in $(T_e,T_c)$ with $T_v$ and fluid one-hot as control, states std-scaled,
+time in hours) is integrated by clipped RK4 rollout from the measured initial state; the GRU baseline is an
+autoregressive dynamical model (GRU cell, hidden 64) consuming $(t, T_v, \dot T_v, \text{fluid}, T_e^{\mathrm{prev}},
+T_c^{\mathrm{prev}})$, trained teacher-forced one-step-ahead (25\,s steps) and rolled out from the measured initial
+state, driven by the measured $T_v(t)$. Three GRU seeds; GP with wide kernel bounds ($10^{-3}$--$10^{4}$,
+5 restarts) is reported as GP.
+
+Four further references probe what the comparison actually tests:
+\textbf{Trivial} $T_e = T_v - c_f$ (per-fluid mean gap); \textbf{Ridge-linear}, a linear state-space
+$\dot{(T_e,T_c)} = W\,[T_e, T_c, T_v, \text{fluid}, 1]$ fitted by ridge regression on finite-difference
+derivatives and rolled out by RK4 (the linear data-driven counterpart); a \textbf{one-node} ablation
+$\dot T_e = a_f(T_v - T_e) - d\,(T_e - T_{\mathrm{cool}})$ fitted by the same shooting procedure (five parameters,
+no condenser node; predicts $T_e$ only); and \textbf{Linear-SS}, an unconstrained per-fluid linear state-space
+$\dot X = A X + g\,T_v + c$ with all eight entries free per fluid (no cross-fluid or physical sharing),
+fitted by the same output-error shooting -- a free linear form of the same order as the physical model.
+
+\subsection{Validation protocol}
+Leave-one-run-out (LORO): fit on six (run, fluid) series of two runs, predict all three fluids of the held-out run by
+rolling the identified ODE (or GRU) from its measured initial state, driven by its measured $T_v(t)$. Because the
+three fluids within a run share the same vessel drive, each fold has effectively one independent driver with three
+repeated measures. Only holding out Run 2 is interpolation; Run 1 is downward extrapolation (training on
+$\sim$70 and $\sim$\SI{93}{\celsius}, testing at $\sim$\SI{58}{\celsius}) and Run 3 upward extrapolation
+(training $\le$\SI{70}{\celsius}, testing $\sim$\SI{93}{\celsius}). Structure-selection choices made during the
+analysis (constant $\kappa$, shared $d$, driver variant, $T_c$ weighting) were made with all folds in view and are
+therefore not blind; the $\kappa(T_e)$ assessment rests on fixed-$\beta$ grid profiles with the remaining
+parameters refit at every grid point (within-run identifiability) and on two-run LORO transfer fits.
+A final fit on all runs provides the deployed model.

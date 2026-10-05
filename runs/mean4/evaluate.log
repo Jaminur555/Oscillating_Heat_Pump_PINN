@@ -1,0 +1,27 @@
+[fold 1] ODE-shoot done in 21s
+[fold 1] MLP done in 20s
+[fold 1] GP done in 28s
+[fold 1] PINN-const|seed0 done in 59s
+[fold 1] PINN-const|seed1 done in 54s
+[fold 1] PINN-state|seed0 done in 61s
+[fold 1] PINN-state|seed1 done in 62s
+[fold 2] ODE-shoot done in 19s
+[fold 2] MLP done in 10s
+[fold 2] GP done in 26s
+[fold 2] PINN-const|seed0 done in 57s
+[fold 2] PINN-const|seed1 done in 56s
+[fold 2] PINN-state|seed0 done in 61s
+[fold 2] PINN-state|seed1 done in 60s
+[fold 3] ODE-shoot done in 24s
+[fold 3] MLP done in 32s
+[fold 3] GP done in 29s
+[fold 3] PINN-const|seed0 done in 54s
+[fold 3] PINN-const|seed1 done in 56s
+[fold 3] PINN-state|seed0 done in 59s
+[fold 3] PINN-state|seed1 done in 53s
+[fold None] ODE-shoot done in 18s
+[fold None] PINN-const|seed0 done in 72s
+[fold None] PINN-const|seed1 done in 70s
+[fold None] PINN-state|seed0 done in 70s
+[fold None] PINN-state|seed1 done in 71s
+ALL DONE

@@ -1,0 +1,4 @@
+driver,holdout_run1_RMSE_K,holdout_run2_RMSE_K,holdout_run3_RMSE_K,Rstar_EOHP,Rstar_MOHP,Rstar_WOHP,source
+mean4,0.432,0.266,0.717,12.13,6.83,5.60,ODE-shoot (tv_sensitivity.py)
+outer,0.410,0.255,0.722,13.64,7.32,5.94,ODE-shoot (tv_sensitivity.py)
+inner,0.457,0.291,0.715,10.92,6.40,5.30,ODE-shoot (tv_sensitivity.py)

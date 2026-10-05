@@ -1,0 +1,84 @@
+    ep    0  loss 2.1154
+    ep  100  loss 0.0029
+    ep  200  loss 0.0009
+    ep  300  loss 0.0004
+    ep  400  loss 0.0002
+    ep  500  loss 0.0002
+    ep  600  loss 0.0001
+    ep  700  loss 0.0001
+    ep  800  loss 0.0001
+    ep  900  loss 0.0001
+    ep 1000  loss 0.0001
+    ep 1100  loss 0.0001
+    ep 1200  loss 0.0001
+    ep 1300  loss 0.0001
+    ep 1400  loss 0.0001
+[fold 1] GRU|seed0 done in 542s
+[fold 1] GRU|seed1 done in 569s
+[fold 1] GRU|seed2 done in 561s
+    ep    0  loss 2.1091
+    ep  100  loss 0.0031
+    ep  200  loss 0.0009
+    ep  300  loss 0.0004
+    ep  400  loss 0.0002
+    ep  500  loss 0.0002
+    ep  600  loss 0.0001
+    ep  700  loss 0.0001
+    ep  800  loss 0.0001
+    ep  900  loss 0.0001
+    ep 1000  loss 0.0001
+    ep 1100  loss 0.0001
+    ep 1200  loss 0.0001
+    ep 1300  loss 0.0001
+    ep 1400  loss 0.0001
+[fold 2] GRU|seed0 done in 509s
+[fold 2] GRU|seed1 done in 651s
+[fold 2] GRU|seed2 done in 713s
+    ep    0  loss 2.1204
+    ep  100  loss 0.0035
+    ep  200  loss 0.0010
+    ep  300  loss 0.0005
+    ep  400  loss 0.0003
+    ep  500  loss 0.0002
+    ep  600  loss 0.0002
+    ep  700  loss 0.0002
+    ep  800  loss 0.0001
+    ep  900  loss 0.0001
+    ep 1000  loss 0.0001
+    ep 1100  loss 0.0001
+    ep 1200  loss 0.0001
+    ep 1300  loss 0.0001
+    ep 1400  loss 0.0001
+[fold 3] GRU|seed0 done in 730s
+[fold 3] GRU|seed1 done in 692s
+[fold 3] GRU|seed2 done in 718s
+    ep    0  loss 2.1120
+    ep  100  loss 0.0027
+    ep  200  loss 0.0009
+    ep  300  loss 0.0004
+    ep  400  loss 0.0002
+    ep  500  loss 0.0002
+    ep  600  loss 0.0001
+    ep  700  loss 0.0001
+    ep  800  loss 0.0001
+    ep  900  loss 0.0001
+    ep 1000  loss 0.0001
+    ep 1100  loss 0.0001
+    ep 1200  loss 0.0001
+    ep 1300  loss 0.0001
+    ep 1400  loss 0.0001
+[fold None] GRU|seed0 done in 720s
+[fold None] GRU|seed1 done in 758s
+[fold None] GRU|seed2 done in 735s
+
+=== GRU LORO summary (mean over seeds, RMSE_Te per held-out run) ===
+fold 1 EOHP :   0.46 +- 0.20 K  (n=3)
+fold 1 MOHP :   0.67 +- 0.20 K  (n=3)
+fold 1 WOHP :   1.19 +- 0.19 K  (n=3)
+fold 2 EOHP :   0.55 +- 0.16 K  (n=3)
+fold 2 MOHP :   0.99 +- 0.26 K  (n=3)
+fold 2 WOHP :   0.53 +- 0.13 K  (n=3)
+fold 3 EOHP :   6.00 +- 0.44 K  (n=3)
+fold 3 MOHP :   4.46 +- 0.27 K  (n=3)
+fold 3 WOHP :   4.51 +- 0.43 K  (n=3)
+ALL DONE

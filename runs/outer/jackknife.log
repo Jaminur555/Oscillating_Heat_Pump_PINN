@@ -1,0 +1,40 @@
+full fit done in 80s
+leave-out (1, 'EOHP') done 144s
+leave-out (1, 'MOHP') done 219s
+leave-out (1, 'WOHP') done 291s
+leave-out (2, 'EOHP') done 349s
+leave-out (2, 'MOHP') done 416s
+leave-out (2, 'WOHP') done 487s
+leave-out (3, 'EOHP') done 570s
+leave-out (3, 'MOHP') done 636s
+leave-out (3, 'WOHP') done 711s
+     param   value  jk_mean  jk_sd  loo_sd
+ loga_EOHP -4.4025  -4.4096 0.1359  0.0510
+ loga_MOHP -4.7969  -4.7559 0.1668  0.0626
+ loga_WOHP -4.9410  -4.9871 0.1639  0.0614
+ logK_EOHP -7.0152  -7.0590 0.1349  0.0506
+ logK_MOHP -6.7870  -6.7421 0.1898  0.0712
+ logK_WOHP -6.7224  -6.7676 0.1767  0.0663
+      logr -3.1107  -3.2023 0.3674  0.1378
+      logd -7.0344  -7.1371 0.3202  0.1201
+     Tcool 18.1045  18.1475 0.3451  0.1294
+Rstar_EOHP  2.6127   2.6494 0.1100  0.0412
+Rstar_MOHP  1.9901   1.9862 0.0274  0.0103
+Rstar_WOHP  1.7815   1.7805 0.0159  0.0060
+
+=== R* jackknife (LOG scale: value +- jk_sd; linear R* = exp(value), multiplicative factor exp(sd)) ===
+EOHP    2.61 +- 0.11
+MOHP    1.99 +- 0.03
+WOHP    1.78 +- 0.02
+
+=== pairwise R* differences (value +- jk_sd; ordering robust if |value| > 2sd) ===
+R*_EOHP - R*_MOHP =   0.62 +- 0.11  (5.4 sigma)
+R*_MOHP - R*_WOHP =   0.21 +- 0.03  (8.2 sigma)
+
+=== 95% t-intervals (8 df, t=2.306) for log R* and pairwise log differences ===
+log R*_EOHP: [2.36, 2.87]  -> R* in [10.6, 17.6]
+log R*_MOHP: [1.93, 2.05]  -> R* in [6.9, 7.8]
+log R*_WOHP: [1.74, 1.82]  -> R* in [5.7, 6.2]
+log R*_EOHP-log R*_MOHP: [0.36, 0.89]  (0 outside: ordering significant)
+log R*_MOHP-log R*_WOHP: [0.15, 0.27]  (0 outside: ordering significant)
+DONE

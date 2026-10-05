@@ -1,0 +1,225 @@
+\section{Results}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig2_loro.pdf}
+\caption{LORO held-out evaporator predictions (all folds and fluids): measured (black), ODE shooting (blue),
+PINN-const seed-mean (vermillion), GRU seed-mean (green). Run 3 is the extrapolation fold; black boxes degrade
+there, structured fits do not.}
+\label{fig:loro}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.7\textwidth]{fig3_rmse.pdf}
+\caption{Held-out $T_e$ RMSE by method and fold (mean over fluids; seed sd where applicable; log scale).}
+\label{fig:rmse}
+\end{figure}
+
+\subsection{Prediction accuracy}
+Table~\ref{tab:loro} and Figs.~\ref{fig:loro}--\ref{fig:rmse} give the headline result, and the added references
+sharpen what it means. The trivial gap baseline $T_e = T_v - c_f$ is within \SI{3}{\kelvin} everywhere -- the
+signal rises some \SI{60}{\kelvin}, so all sub-3\,K numbers should be read against that anchor -- and it beats every
+nonlinear black box on the upward-extrapolation fold. What enables extrapolation is \emph{structure}, not physics
+specifically: every linear two-state form fitted by output-error shooting extrapolates -- the physical ODE at
+0.41/0.26/\SI{0.73}{\kelvin}, the one-node ablation at 0.39/0.24/\SI{0.71}{\kelvin}, and an unconstrained
+per-fluid linear state-space with no physical parameterisation at all at 0.28/0.30/\SI{0.68}{\kelvin} -- while
+free-form learners (MLP, GP, degree-2 SINDy) fail at \SIrange{23}{87}{\kelvin}. The ridge-fitted linear
+state-space sits between (\SIrange{2.7}{5.8}{\kelvin}) because its rates come from noisy finite differences
+(errors in variables), not from shooting. The physical parameterisation is therefore unnecessary for
+\emph{accuracy}: the free linear form matches or beats it in every fold; it is retained for parsimony (9 shared
+parameters against $3{\times}8$ free ones, fitted per fluid without cross-fluid borrowing) and for the
+interpretable $R^*$ it exposes. The GRU, exploiting temporal structure, is the best black
+box on extrapolation (\SI{5}{\kelvin}) but still $\sim$6$\times$ worse than the structured fits. The ODE shot is
+slightly better than the PINN in every fold (0.41/0.26/0.73 vs.\ 0.45/0.35/0.85); for this fully-observed
+9-parameter system the PINN machinery adds nothing measurable over classical shooting -- the honest conclusion,
+not a surprise. Seed dispersion of the PINN is $\le$\SI{0.03}{\kelvin} across ten seeds per fold.
+
+\begin{table}[t]\centering\small
+\caption{Held-out evaporator $T_e$ RMSE (mean over fluids, K) against raw data; mean~$\pm$~sd over seeds.
+Run 2 is interpolation; Runs 1 and 3 are downward/upward extrapolation in heating level.}
+\label{tab:loro}
+\begin{tabular}{lccc}
+\toprule
+ & Run 1 (down extrap.) & Run 2 (interp.) & Run 3 (up extrap.) \\
+\midrule
+Trivial ($T_v{-}c_f$) & 1.87 & 0.82 & 2.84 \\
+MLP            & 3.93 & 5.98 & 23.54 \\
+GP (narrow / wide) & 0.77 / 0.58 & 0.71 / 0.74 & 25.80 / 25.81 \\
+SINDy (deg 2)  & 0.65 & 1.19 & 86.49 \\
+Ridge-linear   & 2.24 & 5.78 & 2.66 \\
+Linear-SS ($3{\times}8$ params) & 0.28 & 0.30 & $\mathbf{0.68}$ \\
+GRU (3 seeds)  & $0.77\pm0.09$ & $0.69\pm0.18$ & $\mathbf{4.99\pm0.34}$ \\
+One-node (5 params) & 0.39 & 0.24 & 0.71 \\
+ODE-shoot (9 params) & 0.41 & 0.26 & 0.73 \\
+PINN-const (10 seeds) & $0.45\pm0.01$ & $0.35\pm0.01$ & $0.85\pm0.01$ \\
+PINN-state (10 seeds) & $0.69\pm0.02$ & $0.47\pm0.04$ & $1.03\pm0.03$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Condenser $T_c$ RMSE is \SIrange{0.2}{1.5}{\kelvin} for all physics fits ($T_c$ moves only \SIrange{2}{5}{\kelvin}).
+
+\subsection{Structure ablation: is the second node needed?}
+The one-node model (5 parameters, no condenser node) matches the two-node fits on $T_e$ everywhere
+(0.39/0.24/0.71\,K vs.\ 0.41/0.26/0.73 for shooting). For evaporator prediction alone, the second node, $r$, $d$
+and $T_{\mathrm{cool}}$ earn nothing -- the two-node structure is retained because it additionally predicts the
+condenser channel and is validated by the adiabatic consistency check below, and because its parameters carry
+the physical interpretation; but no accuracy claim rests on the extra node.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.6\textwidth]{fig4_rstar.pdf}
+\caption{Dimensionless coupling ratio $R^*=a_f/\kappa_f$ from every fit (all LORO folds and seeds).}
+\label{fig:rstar}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.5\textwidth]{fig5_ident.pdf}
+\caption{Identifiability: rescaling $(a_f,\kappa_f)$ jointly (fixed $R^*$) barely moves the held-out RMSE -- the
+rates are sloppy, their ratio is not. The absolute rates still set scenario timescales; that band is propagated
+in the scenario metrics below.}
+\label{fig:ident}
+\end{figure}
+
+\subsection{Identified parameters and \texorpdfstring{$R^*$}{R*}}
+$R^*$ (Table~\ref{tab:rstar}, Fig.~\ref{fig:rstar}) ranks EOHP $>$ MOHP $>$ WOHP in every fit and every fold. It is
+a ratio of fitted rates and we do not attribute it to a specific resistance: the decomposition between
+vessel--evaporator contact resistance and pipe resistance is not identifiable here, and the source study reports
+fluid-dependent contact resistance. Quantitatively, in the final shooting fit $\ln R^*_E/R^*_W = 0.83$ splits as
+$\ln(a_E/a_W) = +0.54$ minus $\ln(\kappa_E/\kappa_W) = -0.29$: about two-thirds of the gap sits in the inlet
+coupling $a_f$ and one-third in the pipe conductance $\kappa_f$ (PINN: 60/40;
+runs/outer/rstar\_decomposition.log). These shares are per-fluid ratios of fitted rates, hence invariant to the
+joint-rescaling sloppiness of Fig.~\ref{fig:ident}, but they remain a decomposition of fitted rates, not
+measurements of separate physical resistances.
+In steady state $R^* = (T_e{-}T_c)/(T_v{-}T_e)$, and plateau ratios computed directly from the data give
+9.9/12.4/14.6 (EOHP), 7.1/7.6/7.2 (MOHP), 6.4/6.1/6.1 (WOHP) for Runs 1--3 -- the dynamics-based fit reproduces
+the plateau ratios and smooths their run-to-run drift. That drift is informative: EOHP's ratio rises $\sim$48\%
+with heating level while methanol and water stay flat, consistent with the early, sharp ethanol dry-out reported
+in the source study (onset 70/83/98\,W for ethanol vs.\ 105/135/160\,W gradual onset for methanol and water); the
+constant-$\kappa$ model absorbs this as a cross-run power-level effect ($\pm$20\% on $\kappa$) and cannot represent
+dry-out onset. $R^*$ is invariant to the sampling interval (DT$_S$\,=\,1 vs 5 reruns give identical rankings and
+near-identical values), and robust to the choice of vessel thermocouple driver (outer vs.\ mean-of-four changes
+absolute values by up to $\sim$12\% but never the ranking or the accuracy). The absolute rate parameters
+$(a_f,\kappa_f)$ are constrained only to within a factor $\sim$2 at the sub-kelvin level -- rescaling both jointly
+leaves RMSE at 0.40/0.65\,K for 1$\times$/2$\times$ (Fig.~\ref{fig:ident}) -- while their ratio is far stiffer
+across methods, seeds and folds; this is why $R^*$, not the rates, is the reportable quantity.
+
+\begin{table}[t]\centering\small
+\caption{Dimensionless coupling ratio $R^*=a_f/\kappa_f$ (mean $\pm$ sd over all LORO + final fits).
+The ODE-shoot jackknife-over-series row gives 68\% intervals: $R^*$ = 13.6 $\times/\div$ 1.12 (EOHP),
+7.3 $\times/\div$ 1.03 (MOHP), 5.9 $\times/\div$ 1.01 (WOHP).}
+\label{tab:rstar}
+\begin{tabular}{lccc}
+\toprule
+ & EOHP & MOHP & WOHP \\
+\midrule
+ODE-shoot    & $13.54\pm0.90$ & $7.33\pm0.11$ & $5.95\pm0.03$ \\
+PINN-const   & $12.63\pm0.56$ & $7.09\pm0.09$ & $5.76\pm0.03$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Jackknife-over-series refits of the shooting model (9 leave-one-series-out fits; runs/outer/jackknife.csv)
+give series-level uncertainty on the ordering: $\log R^*_E - \log R^*_M = 0.62 \pm 0.11$ and
+$\log R^*_M - \log R^*_W = 0.21 \pm 0.03$ (5.4 and 8.2 $\sigma$; 95\% $t$-intervals with 8 degrees of
+freedom $[0.36, 0.89]$ and $[0.15, 0.27]$, both excluding zero), i.e.\ the fluid ordering survives
+resampling at every level we can test, though with one shared driver per run these are series-level,
+not experiment-level, intervals.
+
+\subsection{Negative and corrected results}
+\textbf{$\kappa(T_e)$: identifiable within runs, not transferable across them.} An earlier draft of this analysis
+reported a per-fluid Arrhenius-type $\kappa_f(T_e)=k_{0f}e^{\beta_f(T_e-50)}$ as ``not identifiable''; that verdict
+was an optimiser artefact (the within-run fits initialised $\beta$ at exactly zero with a relative finite-difference
+step, which stalls there). Fixed-$\beta$ grid profiles with the remaining five parameters refit at every point
+(runs/outer/kappa\_te\_profile.log) show $\beta$ is clearly identifiable \emph{within} a run: ethanol improves
+within-run RMSE by 67--71\% at $\hat\beta\approx+0.03$ (19\% in Run 3), water by 45--48\% at
+$\hat\beta\le-0.02$ (grid edge), methanol not at all ($\hat\beta\approx0$) -- a sign pattern consistent with the
+cross-run $\kappa$ drift. What fails is \emph{transfer}: fitted on two runs with all parameters shared and applied
+to the held-out run, the training $\hat\beta$ collapses toward zero and leaves held-out RMSE unchanged or worse in
+eight of nine folds (WOHP Run 1: \SI{0.15}{\kelvin} at $\beta=0$ vs.\ \SI{0.52}{\kelvin} at the training
+$\hat\beta=-0.005$; one fold improves, EOHP Run 3: 0.77$\to$\SI{0.50}{\kelvin}), and the joint PINN-kTe fit
+likewise degrades the extrapolation fold (0.85$\to$\SI{1.19}{\kelvin}). The temperature dependence is thus
+run-specific -- a heating-level effect, not a transferable fluid property -- so the deployed model keeps $\kappa$
+constant; extrapolating a $\beta$ identified at one power level to another remains open.
+\textbf{Per-fluid $d$ unnecessary.} Freeing the condenser loss rate per fluid yields $\le$0.02\,K gains on
+interpolated folds and none on extrapolation; learned $d$ ratios span only $\sim$1.2.
+
+\subsection{Adiabatic-channel consistency check}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig8_adiabatic.pdf}
+\caption{Held-out adiabatic channel (never fitted): measured $T_a$ vs.\ the chained prediction
+$T_a = w_1 T_e^{\mathrm{pred}} + w_2 T_c^{\mathrm{pred}}$, with $(w_1, w_2)$ fitted on the training runs only.
+EOHP and WOHP agree at sub-\SI{0.5}{\kelvin} RMSE; MOHP Run 3 is the identified hard case.}
+\label{fig:adiabatic}
+\end{figure}
+
+The adiabatic thermocouples were never used in fitting. A static mixture of the two node temperatures,
+$T_a \approx w_1 T_e + w_2 T_c$ (no intercept), reproduces them in-sample at \SIrange{0.1}{0.4}{\kelvin} (vs.\
+\SIrange{19}{47}{\kelvin} for $T_v$ alone), with $w_1{+}w_2 \approx 0.96$--0.99 and $w_1$ fluid-ordered
+(E 0.14 $<$ M 0.24 $<$ W 0.34: the adiabatic wall sits nearer the condenser for water). Under LORO, held-out $T_a$
+is predicted at \SIrange{0.27}{0.45}{\kelvin} for EOHP/WOHP and \SIrange{0.6}{3.5}{\kelvin} for MOHP (Run 3 is the hard
+case); chaining model-predicted $T_e, T_c$ (Fig.~\ref{fig:adiabatic}) stays at \SIrange{0.14}{0.76}{\kelvin} for E/W
+and \SI{4.25}{\kelvin} for MOHP Run 3. We present this as a consistency check, not a structural test: two free
+weights can interpolate any profile lying between the two nodes, and the chained version scoring slightly better
+than the measured-input version (0.14 vs.\ 0.27\,K for EOHP Run 1) shows the metric is insensitive at this level.
+A one-parameter variant ($w_2 = 1 - w_1$, $w_1$ = 0.12/0.20/0.32 for E/M/W) performs the same or better on
+EOHP/WOHP (\SIrange{0.17}{0.58}{\kelvin} held-out), confirming the check constrains little beyond ``$T_a$ lies between
+the nodes''. It does establish that the fitted two-node states are mutually consistent with an untrained
+measurement.
+
+\subsection{Exported model and a model-implied scenario illustration}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig6_replay.pdf}
+\caption{Streaming ONNX replay of held-out Run 3 (fold-3 model, never trained on Run 3).}
+\label{fig:replay}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig7_case.pdf}
+\caption{Model-implied scenarios at a \SI{75}{\celsius} setpoint (ONNX rollouts, final fit). (a) Ramp-and-hold
+($\tau=\SI{300}{\second}$): EOHP tracks the vessel tightly (lowest lag, fastest settle); WOHP lags most.
+(b) Thermostat on/off duty (last two cycles): WOHP shows the smallest evaporator ripple. (c) \SI{10}{\kelvin},
+\SI{60}{\second} disturbance slug: WOHP transmits the least disturbance. EOHP's tracking advantage is robust
+to rate rescaling and jackknife refits; the ripple ordering is not separable within the rate-identifiability
+band (text).}
+\label{fig:case}
+\end{figure}
+
+The fitted right-hand side (not the PINN network) is exported as ONNX and streams held-out Run 3 at
+0.85/0.79/\SI{0.88}{\kelvin} (E/M/W) in a replay loop (Fig.~\ref{fig:replay}). As an \emph{illustration of what the
+identified model implies} -- not a validated design tool -- we drive it with three waveform families (ramp-and-hold
+to 60/75/\SI{90}{\celsius} at three rates; 4 on/off thermostat cycles; a \SI{10}{\kelvin} 60\,s disturbance slug),
+all inside the fitted temperature envelope. Within this linear model the fluids differ mainly as a first-order
+lag: on tracking metrics (deviation from setpoint, vessel--evaporator lag, settling) EOHP wins in 100\% of
+(fit, scenario) cases (mean lag 4.0 vs.\ \SI{8.1}{\kelvin} for WOHP); on ripple rejection WOHP wins at the
+identified rates (cyclic-duty ripple 28--49 vs.\ \SIrange{31}{55}{\kelvin} across setpoints; slug response
+1.8 vs.\ \SI{2.8}{\kelvin} at \SI{60}{\celsius}), the same bandwidth trade-off read from the other end. The ordering
+is monotone in $R^*$, though with three fluids two of six orderings match by chance, so this is consistent-with,
+not evidence for, $R^*$ as a selection dial. Two uncertainty checks qualify the case study
+(runs/outer/scenario\_bands.log). Across the 10 seeds of the final fit the scenario metrics vary by only
+$\pm$\SIrange{0.03}{0.15}{\kelvin}, far below the inter-fluid gaps. But the absolute rates are themselves sloppy
+(Fig.~\ref{fig:ident}): replaying all scenarios with $(a_f,\kappa_f)$ jointly rescaled $\times/\div 2$ -- which
+barely moves held-out RMSE -- and through the 9 leave-one-series-out jackknife refits leaves every tracking
+metric and its ordering unchanged (EOHP best in 100\% of variants; the quasi-static lag $T_v{-}T_e =
+R^*(T_e{-}T_c)$ is rate-invariant by construction), while the genuinely dynamic ripple metrics move by up to
+$\sim$\SI{6}{\kelvin}, and inside that band the EOHP--WOHP ripple ordering is not separable (best-fluid share
+60/40 across variants). The tracking advantage is robust to everything we can vary; the ripple advantage is real
+at the identified rates but not credibly resolvable given how loosely those rates are identified. Because the
+model contains no heat-flux limit or dry-out onset -- the phenomenon the source study identifies as decisive for
+fluid choice, and which hits ethanol first -- these illustrations must not be read as fluid recommendations;
+they show what the identified linear dynamics imply, no more.
+
+\subsection{What the seed ensemble does and does not measure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.6\textwidth]{fig9_bands.pdf}
+\caption{Seed-ensemble band (10 PINN seeds, mean $\pm$ 2 sd) on the held-out Run 3 EOHP evaporator temperature:
+the parameter band is far narrower than the residual -- seed spread quantifies identifiability, not total error.}
+\label{fig:bands}
+\end{figure}
+
+The 10-seed ensemble spread of held-out rollouts is \SIrange{0.01}{0.05}{\kelvin} (2 sd), while actual held-out residuals
+are \SIrange{0.25}{0.89}{\kelvin} (Fig.~\ref{fig:bands}): nominal 95\% bands cover 0--34\% of the raw data. Seed dispersion
+quantifies parameter (identifiability) uncertainty only; the residual is dominated by structural and measurement
+error. We therefore report seed bands as parameter uncertainty, not as full predictive bands (conformal augmentation
+is future work).

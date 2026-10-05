@@ -1,0 +1,9 @@
+\section{Conclusion}
+A two-node, vessel-driven grey-box model of a helically coiled OHP, identified by PINN or plain ODE shooting from a
+public three-fluid dataset, predicts unseen runs at \SIrange{0.24}{0.85}{\kelvin}, including extrapolation
+$\pm$\SI{23}{\kelvin} in heating level where all nonlinear black-box baselines fail; the identified right-hand side
+exports as ONNX, remains consistent with an untrained adiabatic channel, and yields a dimensionless coupling ratio
+$R^*$ that is robust across methods, seeds and sampling, and whose ethanol drift matches the dry-out signature
+reported in the source data. The honest accounting: structure, not the optimiser, carries the accuracy; the second
+node is justified by the auxiliary channels rather than evaporator accuracy; and the model's scenario implications
+are illustrations within its validated envelope, not fluid recommendations.

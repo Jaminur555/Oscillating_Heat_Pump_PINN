@@ -1,0 +1,37 @@
+\section{Introduction}
+Oscillating heat pipes (OHPs) achieve high effective conductivity through self-excited two-phase oscillation, but the
+same mechanism makes their behaviour difficult to model from first principles: the flow regime, the distribution of
+liquid slugs and vapour plugs, and the evaporation--condensation dynamics are only partially observable through wall
+temperatures. Working-fluid comparison is therefore usually experimental: one apparatus per fluid, per fill ratio, per
+geometry. Data-driven surrogates trained on such measurements interpolate well but are known to fail when asked to
+extrapolate to unseen operating conditions -- precisely the question a designer asks (``what if we run hotter?'').
+
+Grey-box identification offers a middle road: impose the physically mandatory structure (energy conservation on a
+small number of lumped nodes) and learn the few effective parameters from data. Physics-informed neural networks
+(PINNs) provide a convenient machinery for this, embedding the ODE residual in the loss through automatic
+differentiation and optimising physical parameters jointly with a trial solution. What PINNs add over classical
+shooting-based parameter fitting for such small, well-posed ODEs is, however, an open and often glossed-over question.
+
+This paper contributes a deliberately honest case study on a public dataset of a helically coiled OHP (HCOHP)
+\cite{dataset,dib} operated with three working fluids:
+\begin{enumerate}
+  \item a two-node grey-box model, vessel-temperature-driven, identified by PINN and by ODE shooting, validated
+        leave-one-run-out with extrapolation both up and down in heating level, against IC-fair baselines:
+        trivial, linear, and nonlinear black boxes (MLP, GP, SINDy, autoregressive GRU);
+  \item evidence that a correctly structured linear model, not the PINN optimiser or the physical
+        parameterisation, carries the accuracy: shooting, one-node, and even an unconstrained per-fluid linear
+        state-space extrapolate at \SIrange{0.3}{0.9}{\kelvin} while nonlinear black boxes degrade
+        (GRU \SI{5}{\kelvin}, others \SIrange{24}{87}{\kelvin}; trivial gap baseline \SI{3}{\kelvin});
+  \item a dimensionless coupling ratio $R^*=a_f/\kappa_f$ that is invariant to the sampling interval,
+        seed- and method-stable, ranks the fluids identically in every fit, and is recoverable from plateau
+        ratios alone -- with the ethanol drift consistent with the dry-out reported in the source data;
+  \item negative results reported as such: a temperature-dependent pipe conductance $\kappa(T_e)$ is
+        identifiable within each run (an initial ``not identifiable'' verdict was an optimiser artefact,
+        corrected) but is a heating-level effect that does not transfer across runs, so the deployed model
+        keeps $\kappa$ constant; per-fluid condenser loss rates do not pay for their parameters;
+  \item a consistency check on an untrained channel: adiabatic-section temperatures are reproduced as a static
+        mixture of the two identified nodes to \SI{<0.5}{\kelvin} on held-out EOHP/WOHP runs (MOHP is harder);
+  \item an exported ONNX simulator used for model-implied scenario illustrations (tracking vs.\ ripple rejection
+        along $R^*$) with seed-ensemble bands -- explicitly not fluid recommendations, since the model carries no
+        heat-flux or dry-out limits.
+\end{enumerate}

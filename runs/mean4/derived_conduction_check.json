@@ -1,0 +1,23 @@
+{
+ "run1": {
+  "flux_per_dT_median": 29718.212571957254,
+  "flux_per_dT_sd": 6.354758650400408e-12,
+  "Qcyl_W_per_K": 9902.085279737772,
+  "ratio_to_Qcyl": 3.001207496442028,
+  "power_over_flux": 0.034
+ },
+ "run2": {
+  "flux_per_dT_median": 29718.212571957254,
+  "flux_per_dT_sd": 7.087059107572043e-12,
+  "Qcyl_W_per_K": 9902.085279737772,
+  "ratio_to_Qcyl": 3.001207496442028,
+  "power_over_flux": 0.034
+ },
+ "run3": {
+  "flux_per_dT_median": 29718.212571957254,
+  "flux_per_dT_sd": 6.61997196769438e-12,
+  "Qcyl_W_per_K": 9902.085279737772,
+  "ratio_to_Qcyl": 3.001207496442028,
+  "power_over_flux": 0.034
+ }
+}

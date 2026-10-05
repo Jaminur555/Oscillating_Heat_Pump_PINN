@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ohp-twin"
+version = "2.1.0"
+description = "Physics-informed digital twin of oscillating heat pipes: inverse PINN on a lumped two-node model, LORO-validated, exported as ONNX"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+    "scikit-learn>=1.3",
+    "matplotlib>=3.7",
+    "torch>=2.0",
+    "onnx>=1.15",
+    "onnxruntime>=1.16",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["ohp"]

@@ -1,0 +1,10 @@
+model,fluid,mean,std,min,max
+ODE-shoot,EOHP,13.54,0.9,12.32,14.49
+ODE-shoot,MOHP,7.33,0.11,7.18,7.43
+ODE-shoot,WOHP,5.95,0.03,5.91,5.99
+PINN-const,EOHP,12.63,0.56,11.78,13.48
+PINN-const,MOHP,7.09,0.09,6.93,7.22
+PINN-const,WOHP,5.76,0.03,5.71,5.83
+PINN-const-df,EOHP,12.55,0.64,11.88,13.4
+PINN-const-df,MOHP,7.08,0.1,6.94,7.18
+PINN-const-df,WOHP,5.79,0.06,5.74,5.88

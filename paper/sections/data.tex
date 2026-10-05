@@ -1,0 +1,17 @@
+\section{Data}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.5\textwidth]{fig1_data.pdf}
+\caption{Raw thermocouple channel means for Run 2 (all three fluids); the vessel/adiabatic/condenser channels are
+shared across fluids within a run (common bath), so they are shown once.}
+\label{fig:data}
+\end{figure}
+
+We use the public HCOHP dataset of Yeboah and Darkwa \cite{dataset,dib}: a copper helical coil (2\,mm ID tube,
+\SI{8}{\centi\metre} coil diameter, 10 turns; evaporator/adiabatic/condenser sections 0.19/0.20/0.19\,m) on a heated
+vessel (L\,=\,0.30\,m), instrumented with K-type thermocouples logged at \SI{5}{\second}. Three working fluids --
+ethanol (EOHP), methanol (MOHP), deionised water (WOHP) -- were each tested in three heating runs reaching vessel
+plateaus of approximately 58, 70 and \SI{93}{\celsius} (Fig.~\ref{fig:data}). Per (run, fluid) we form channel
+means: vessel $T_v$ (outer wall, the driver), evaporator $T_e$ (3 TCs), condenser $T_c$ (3 TCs), adiabatic $T_a$
+(2 TCs). Models are fitted on Savitzky--Golay-smoothed, 25\,s-subsampled series; all reported errors compare
+predictions interpolated onto the raw unsmoothed records.

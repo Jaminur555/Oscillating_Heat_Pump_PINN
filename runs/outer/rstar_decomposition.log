@@ -1,0 +1,18 @@
+=== ODE-shoot (final fit) ===
+fluid | a_f [1/s] | kappa_f [1/s] | R*
+EOHP  | 0.01225 | 0.000898 | 13.64
+MOHP  | 0.00826 | 0.001128 | 7.32
+WOHP  | 0.00715 | 0.001204 | 5.94
+ln R*_EOHP/R*_MOHP = 0.623  =  ln a-ratio +0.394  -  ln kappa-ratio -0.228   -> shares: a 63% / kappa 37%
+ln R*_MOHP/R*_WOHP = 0.209  =  ln a-ratio +0.144  -  ln kappa-ratio -0.065   -> shares: a 69% / kappa 31%
+ln R*_EOHP/R*_WOHP = 0.831  =  ln a-ratio +0.538  -  ln kappa-ratio -0.293   -> shares: a 65% / kappa 35%
+
+=== PINN-const (final fit) ===
+fluid | a_f [1/s] | kappa_f [1/s] | R*
+EOHP  | 0.01736 | 0.001372 | 12.65
+MOHP  | 0.01233 | 0.001738 | 7.10
+WOHP  | 0.01082 | 0.001877 | 5.76
+ln R*_EOHP/R*_MOHP = 0.578  =  ln a-ratio +0.342  -  ln kappa-ratio -0.236   -> shares: a 59% / kappa 41%
+ln R*_MOHP/R*_WOHP = 0.208  =  ln a-ratio +0.131  -  ln kappa-ratio -0.077   -> shares: a 63% / kappa 37%
+ln R*_EOHP/R*_WOHP = 0.786  =  ln a-ratio +0.473  -  ln kappa-ratio -0.313   -> shares: a 60% / kappa 40%
+

@@ -1,0 +1,22 @@
+data_raw/*.xlsx
+*.pkl
+*.onnx
+__pycache__/
+*.pyc
+*.egg-info/
+
+# latex build artifacts (paper.pdf is tracked)
+*.aux
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+
+# windows reserved-name accidents
+nul
+docs/nul
+docs/paper/nul
+
+.DS_Store
+paper/figures/*.png
+paper/paper.log

@@ -1,0 +1,10 @@
+[fold 1] Linear-SS: EOHP:0.52 MOHP:0.19 WOHP:0.13  (45s)
+[fold 2] Linear-SS: EOHP:0.32 MOHP:0.32 WOHP:0.25  (269s)
+[fold 3] Linear-SS: EOHP:0.44 MOHP:0.97 WOHP:0.64  (119s)
+
+=== fold means (rmse_Te, mean over fluids) ===
+Trivial       1.87 | 0.82 | 2.84
+Ridge-linear  2.24 | 5.78 | 2.66
+One-node      0.39 | 0.24 | 0.71
+Linear-SS     0.28 | 0.30 | 0.68
+DONE

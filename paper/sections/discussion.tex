@@ -1,0 +1,29 @@
+\section{Discussion}
+The consistent picture across Table~\ref{tab:loro} is that extrapolation is enabled by imposing a correct
+(low-dimensional, linear) structure and fitting it by output-error shooting, not by physics-inspired optimisation
+machinery and not by the physical parameterisation itself: the shooting fit of the same equations matches or beats
+the PINN, a one-node variant does as well on the evaporator, and an unconstrained per-fluid linear state-space
+with no physical content does slightly better still (0.28/0.30/\SI{0.68}{\kelvin}). The physical model's yield is
+accordingly not accuracy but parsimony (9 shared parameters against $3{\times}8$ fitted independently per fluid)
+and interpretability -- the dimensionless $R^*$, which the free form does not expose. This is a caution
+for the PINN literature on small lumped systems -- where the classical shooting fit is trivially available -- and
+a clarification of what grey-box structure buys in thermal identification. It is also a caution about black-box
+surrogates for design: every generic learner, including a recurrent model trained on dynamics, failed the
+extrapolation question that the structured model answers at sub-kelvin accuracy -- though a trivial constant-gap
+predictor already achieves \SI{3}{\kelvin}, so the practical margin over naive baselines is modest and should be
+stated. The scientific yield
+is a dimensionless coupling ratio per fluid, robust to sampling, seed and method, that orders the fluids and tracks
+the ethanol dry-out signature reported in the source data; the adiabatic channel offers a weak but free consistency
+check on the identified states.
+
+\textbf{Limitations.} One geometry; three fluids; effectively one independent driver per fold (the three fluids
+share the vessel trace); structure-selection choices were made with all folds in view; slow heating ramps
+(quasi-steady oscillation statistics are not resolved at \SI{5}{\second}); equal vessel--evaporator coupling
+assumed across pipes, though the source reports fluid-dependent contact resistance, so the $R^*$ ordering cannot be
+attributed to the pipe alone; the constant-parameter model cannot represent dry-out onset, which the source study
+identifies as decisive for fluid choice; absolute fluxes are not identifiable from these records (the dataset's
+derived flux constant $h=\SI{2100}{\watt\per\square\metre\per\kelvin}$ could not be traced to a source, and the
+derived vessel-flux columns reproduce the cylindrical-wall conductance but are thermocouple-resolution-limited);
+the known MOHP Run 3 flow-state change and hot-slug transient are left in (excluding $\pm$150\,s windows changes
+that fold's RMSE only marginally). Results do not extend to hotspot-flux, dry-out-limited or geometry-optimisation
+questions.
