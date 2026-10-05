@@ -151,7 +151,5 @@ One geometry, three fluids, three runs, a single extrapolation fold; slow ramps
 absolute fluxes not identifiable. No claims about hotspot-flux or geometry
 optimisation.
 
-## Citing
-
-See `CITATION.cff`. Please also cite the source dataset (DOI 10.17632/wnf5jwzp3c.3).
-License: MIT (code). The dataset is CC BY 4.0, copyright its authors.
+License: MIT (code), see `LICENSE`. The dataset is CC BY 4.0, copyright its authors —
+please cite the source dataset (DOI 10.17632/wnf5jwzp3c.3) if you use it.
